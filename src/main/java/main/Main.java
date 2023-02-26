@@ -1,18 +1,24 @@
+package main;
+
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import servlets.Frontend;
+import servlets.AllRequestsServlet;
+
+
+
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        Frontend frontend = new Frontend();
-        Server server = new Server(8080);
+        AllRequestsServlet allRequestsServlet = new AllRequestsServlet();
+
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        context.addServlet(new ServletHolder(allRequestsServlet),"/*");
+
+        Server server = new Server(8090);
         server.setHandler(context);
-        context.addServlet(new ServletHolder(frontend), "/mirror");
 
         server.start();
-        System.out.println("Server started!");
         server.join();
     }
 }
